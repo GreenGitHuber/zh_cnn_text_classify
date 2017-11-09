@@ -1,0 +1,229 @@
+None
+
+Parameters:
+ALLOW_SOFT_PLACEMENT=True
+BATCH_SIZE=64
+CHECKPOINT_EVERY=100
+DEV_SAMPLE_PERCENTAGE=0.1
+DROPOUT_KEEP_PROB=0.5
+EMBEDDING_DIM=400
+EVALUATE_EVERY=10
+FILTER_SIZES=3,4,5
+L2_REG_LAMBDA=0.0
+LOG_DEVICE_PLACEMENT=False
+NEGATIVE_DATA_FILE=./data/spam_100.utf8
+NUM_CHECKPOINTS=5
+NUM_EPOCHS=200
+NUM_FILTERS=128
+NUM_LABELS=2
+POSITIVE_DATA_FILE=./data/ham_10000.utf8
+
+Writing to /Users/jiangqy/Code/cnn_classify_p3/runs/1510125258
+
+Loading data...
+vector size: 400
+x.shape = (31683, 123, 400)
+y.shape = (31683, 2)
+Train/Dev split: 28515/3168
+conv shape: (?, 121, 1, 128)
+h shape: (?, 121, 1, 128)
+pool shape: (?, 1, 1, 128)
+conv shape: (?, 120, 1, 128)
+h shape: (?, 120, 1, 128)
+pool shape: (?, 1, 1, 128)
+conv shape: (?, 119, 1, 128)
+h shape: (?, 119, 1, 128)
+pool shape: (?, 1, 1, 128)
+h_pool shape: (?, 1, 1, 384)
+Tensor("Reshape:0", shape=(?, 384), dtype=float32)
+Tensor("dropout/dropout/mul:0", shape=(?, 384), dtype=float32)
+<class 'tensorflow.python.framework.ops.Tensor'>
+Writing to /Users/jiangqy/Code/cnn_classify_p3/runs/1510125258
+
+2017-11-08T15:17:01.803320: step 1, loss 8.39327, acc 0.21875
+2017-11-08T15:17:02.808392: step 2, loss 0.838438, acc 0.84375
+2017-11-08T15:17:03.823028: step 3, loss 0.0731892, acc 0.953125
+2017-11-08T15:17:04.831370: step 4, loss 0.0704352, acc 0.96875
+2017-11-08T15:17:05.827208: step 5, loss 0.0197367, acc 0.984375
+2017-11-08T15:17:06.825846: step 6, loss 0.0408093, acc 0.984375
+2017-11-08T15:17:07.830317: step 7, loss 2.76952e-06, acc 1
+2017-11-08T15:17:08.842422: step 8, loss 1.08516, acc 0.984375
+2017-11-08T15:17:09.829072: step 9, loss 1.35991e-05, acc 1
+2017-11-08T15:17:10.812687: step 10, loss 0.0171359, acc 1
+
+Evaluation:
+2017-11-08T15:17:29.004421: step 10, loss 0.0486017, acc 0.998422
+<class 'numpy.ndarray'>
+The feature shape is :(3168, 384)
+The predictions are:[1 1 1 ..., 1 1 1]
+The scores are:[[ -2.63511219e+01   3.80442924e+01]
+ [ -3.93498763e-02   4.01159286e-01]
+ [ -3.19538517e+01   5.12495003e+01]
+ ..., 
+ [ -2.64296665e+01   3.57419434e+01]
+ [ -3.81213036e+01   5.88743172e+01]
+ [ -8.92021656e+00   1.89412861e+01]]
+type:<class 'numpy.ndarray'>
+type:<class 'numpy.ndarray'>
+[[   0    2]
+ [   3 3163]]
+The recall is :0.49968404423380725
+The precision is :0.49952621604548325
+The f1_score is :0.4996051176749329
+
+2017-11-08T15:17:32.167624: step 11, loss 0.000180255, acc 1
+2017-11-08T15:17:33.356799: step 12, loss 0.0108188, acc 1
+2017-11-08T15:17:34.458204: step 13, loss 0.0146441, acc 1
+2017-11-08T15:17:35.575951: step 14, loss 0.0118003, acc 1
+2017-11-08T15:17:36.662478: step 15, loss 0.0131866, acc 1
+2017-11-08T15:17:37.766829: step 16, loss 0.0212515, acc 1
+2017-11-08T15:17:38.852840: step 17, loss 5.97818e-06, acc 1
+2017-11-08T15:17:39.950223: step 18, loss 0.92564, acc 0.984375
+2017-11-08T15:17:41.019123: step 19, loss 0.0075265, acc 1
+2017-11-08T15:17:42.070544: step 20, loss 0.00484142, acc 1
+
+Evaluation:
+2017-11-08T15:17:57.326897: step 20, loss 0.0566596, acc 0.998737
+<class 'numpy.ndarray'>
+The feature shape is :(3168, 384)
+The predictions are:[1 1 1 ..., 1 1 1]
+The scores are:[[-35.4862175   47.90764618]
+ [ -0.11652127   0.48270786]
+ [-43.80307388  64.33222198]
+ ..., 
+ [-33.98333359  45.22061539]
+ [-51.72415543  73.86527252]
+ [-13.15384674  23.52403069]]
+type:<class 'numpy.ndarray'>
+type:<class 'numpy.ndarray'>
+[[   0    2]
+ [   2 3164]]
+The recall is :0.4996841440303222
+The precision is :0.4996841440303222
+The f1_score is :0.4996841440303222
+
+2017-11-08T15:17:59.943888: step 21, loss 0.00924062, acc 1
+2017-11-08T15:18:01.013954: step 22, loss 0.0139138, acc 1
+2017-11-08T15:18:02.142714: step 23, loss 1.60914, acc 0.96875
+2017-11-08T15:18:03.233125: step 24, loss 0.00725419, acc 1
+2017-11-08T15:18:04.324716: step 25, loss 0.00301445, acc 1
+2017-11-08T15:18:05.413049: step 26, loss 0.0043385, acc 1
+2017-11-08T15:18:06.504984: step 27, loss 0.001791, acc 1
+2017-11-08T15:18:07.580730: step 28, loss 0.00556058, acc 1
+2017-11-08T15:18:08.668422: step 29, loss 0.00794418, acc 1
+2017-11-08T15:18:09.761459: step 30, loss 0.0141377, acc 1
+
+Evaluation:
+2017-11-08T15:18:24.633524: step 30, loss 0.0570836, acc 0.998737
+<class 'numpy.ndarray'>
+The feature shape is :(3168, 384)
+The predictions are:[1 1 1 ..., 1 1 1]
+The scores are:[[-37.6590271   50.53252792]
+ [ -0.13690645   0.50575578]
+ [-46.75019836  67.20015717]
+ ..., 
+ [-35.62068176  47.39139938]
+ [-55.08254623  77.51425171]
+ [-14.21661949  24.63818932]]
+type:<class 'numpy.ndarray'>
+type:<class 'numpy.ndarray'>
+[[   0    2]
+ [   2 3164]]
+The recall is :0.4996841440303222
+The precision is :0.4996841440303222
+The f1_score is :0.4996841440303222
+
+2017-11-08T15:18:27.272285: step 31, loss 0.00929021, acc 1
+2017-11-08T15:18:28.335214: step 32, loss 0.0032495, acc 1
+2017-11-08T15:18:29.462075: step 33, loss 1.72524, acc 0.984375
+2017-11-08T15:18:30.588928: step 34, loss 0.00571089, acc 1
+2017-11-08T15:18:31.712092: step 35, loss 0.0140815, acc 1
+2017-11-08T15:18:32.823223: step 36, loss 0.00116439, acc 1
+2017-11-08T15:18:33.951329: step 37, loss 0.00253933, acc 1
+2017-11-08T15:18:35.060067: step 38, loss 0.00938488, acc 1
+2017-11-08T15:18:36.193741: step 39, loss 0.000172633, acc 1
+2017-11-08T15:18:37.313410: step 40, loss 0.825578, acc 0.984375
+
+Evaluation:
+2017-11-08T15:18:52.351333: step 40, loss 0.0544215, acc 0.998737
+<class 'numpy.ndarray'>
+The feature shape is :(3168, 384)
+The predictions are:[1 1 1 ..., 1 1 1]
+The scores are:[[-37.59830093  50.20316315]
+ [ -0.13949066   0.50986743]
+ [-46.70372009  66.42532349]
+ ..., 
+ [-35.4352951   47.07956314]
+ [-55.01611328  76.76465607]
+ [-14.19679642  24.58723259]]
+type:<class 'numpy.ndarray'>
+type:<class 'numpy.ndarray'>
+[[   0    2]
+ [   2 3164]]
+The recall is :0.4996841440303222
+The precision is :0.4996841440303222
+The f1_score is :0.4996841440303222
+
+2017-11-08T15:18:55.018003: step 41, loss 0.00356146, acc 1
+2017-11-08T15:18:56.113636: step 42, loss 0.594851, acc 0.984375
+2017-11-08T15:18:57.273635: step 43, loss 0.00196037, acc 1
+2017-11-08T15:18:58.421825: step 44, loss 2.45656, acc 0.96875
+2017-11-08T15:18:59.585410: step 45, loss 0.0112349, acc 1
+2017-11-08T15:19:00.738028: step 46, loss 7.82813e-05, acc 1
+2017-11-08T15:19:01.867686: step 47, loss 0.842176, acc 0.96875
+2017-11-08T15:19:03.007452: step 48, loss 0.0103966, acc 1
+2017-11-08T15:19:04.128098: step 49, loss 1.10639e-06, acc 1
+2017-11-08T15:19:05.242319: step 50, loss 0.0188838, acc 0.984375
+
+Evaluation:
+2017-11-08T15:19:19.392277: step 50, loss 0.0441391, acc 0.998737
+<class 'numpy.ndarray'>
+The feature shape is :(3168, 384)
+The predictions are:[1 1 1 ..., 1 1 1]
+The scores are:[[-34.80717087  47.05136108]
+ [ -0.11402005   0.48370665]
+ [-43.20067596  62.03789902]
+ ..., 
+ [-32.73871613  43.55342102]
+ [-51.32088089  72.09966278]
+ [-12.62023735  22.9539566 ]]
+type:<class 'numpy.ndarray'>
+type:<class 'numpy.ndarray'>
+[[   0    2]
+ [   2 3164]]
+The recall is :0.4996841440303222
+The precision is :0.4996841440303222
+The f1_score is :0.4996841440303222
+
+2017-11-08T15:19:22.372346: step 51, loss 0.014571, acc 1
+2017-11-08T15:19:23.499052: step 52, loss 0.0183472, acc 1
+2017-11-08T15:19:24.613487: step 53, loss 0.334931, acc 0.984375
+2017-11-08T15:19:25.750850: step 54, loss 0.042669, acc 0.984375
+2017-11-08T15:19:26.858059: step 55, loss 0.00553461, acc 1
+2017-11-08T15:19:27.981065: step 56, loss 0.00680933, acc 1
+2017-11-08T15:19:29.093685: step 57, loss 0.00982151, acc 1
+2017-11-08T15:19:30.214641: step 58, loss 0.00637178, acc 1
+2017-11-08T15:19:31.299205: step 59, loss 0.0292616, acc 0.984375
+2017-11-08T15:19:32.396087: step 60, loss 0.0789391, acc 0.984375
+
+Evaluation:
+2017-11-08T15:19:47.150885: step 60, loss 0.0392526, acc 0.998106
+<class 'numpy.ndarray'>
+The feature shape is :(3168, 384)
+The predictions are:[1 1 1 ..., 1 1 1]
+The scores are:[[-32.7575798   44.76083374]
+ [ -0.10339422   0.47456047]
+ [-40.31707764  58.44142532]
+ ..., 
+ [-30.65390015  40.94416428]
+ [-48.35256195  68.61779785]
+ [-11.42673111  21.68553162]]
+type:<class 'numpy.ndarray'>
+type:<class 'numpy.ndarray'>
+[[   0    2]
+ [   4 3162]]
+The recall is :0.4996839443742099
+The precision is :0.49936828806064437
+The f1_score is :0.4995260663507109
+
+2017-11-08T15:19:49.915084: step 61, loss 0.468312, acc 0.984375

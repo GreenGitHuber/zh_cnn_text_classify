@@ -5,10 +5,13 @@ import tensorflow as tf
 import numpy as np
 import os
 import time
+import csv
 import datetime
 import data_helpers
 import word2vec_helpers
+from roc_auc_eval import plot_roc
 from text_cnn import TextCNN
+
 
 # Parameters
 # =======================================================
@@ -65,7 +68,7 @@ x_text, y = data_helpers.load_positive_negative_data_files(FLAGS.positive_data_f
 
 # Get embedding vector
 sentences, max_document_length = data_helpers.padding_sentences(x_text, '<PADDING>')
-x = np.array(word2vec_helpers.embedding_sentences(sentences, embedding_size = FLAGS.embedding_dim, file_to_load="/home/momo/PycharmProjects/zh_cnn_text_classify/data/vectors/wiki.zh.text.model",file_to_save = os.path.join(out_dir, 'trained_word2vec.model')))
+x = np.array(word2vec_helpers.embedding_sentences(sentences, embedding_size = FLAGS.embedding_dim, file_to_load="/Users/jiangqy/Code/model/wiki.zh.text.model",file_to_save = os.path.join(out_dir, 'trained_word2vec.model')))
 print("x.shape = {}".format(x.shape))
 print("y.shape = {}".format(y.shape))
 
@@ -80,11 +83,38 @@ shuffle_indices = np.random.permutation(np.arange(len(y)))
 x_shuffled = x[shuffle_indices]
 y_shuffled = y[shuffle_indices]
 
+x_text_shuffled = np.array(x_text)[shuffle_indices]
+
 # Split train/test set
 # TODO: This is very crude, should use cross-validation
 dev_sample_index = -1 * int(FLAGS.dev_sample_percentage * float(len(y)))
 x_train, x_dev = x_shuffled[:dev_sample_index], x_shuffled[dev_sample_index:]
 y_train, y_dev = y_shuffled[:dev_sample_index], y_shuffled[dev_sample_index:]
+
+x_dev_text = x_text_shuffled[dev_sample_index:]
+
+# np.savetxt("xdev.txt", x_dev_text);
+with open('xdev.txt','w') as f:
+    for item in x_dev_text:
+        f.write(item+'\n')
+np.savetxt("ydev.txt", y_dev);
+
+  #========================================================
+# print("\nSave dev_text to file;")
+# feature_dir = os.path.join(out_dir, "feature")
+# try:
+#     if not os.path.exists(feature_dir):
+#         os.makedirs(feature_dir)
+#         data={}
+#         data['label'] = y_dev
+#         # data.to_csv(feature_dir + '/outliers.csv', columns=["txt","label",], header=False)
+#         csv_f = csv.writer(open(feature_dir + '/outliers.csv','w'))
+#         for key,value in data.items():
+#             csv_f.writerow([key,value])
+# except Exception as e:
+#     print("Exception:{}".format(e))
+#========================================================
+
 print("Train/Dev split: {:d}/{:d}".format(len(y_train), len(y_dev)))
 
 # Training
@@ -172,13 +202,75 @@ with tf.Graph().as_default():
               cnn.input_y: y_batch,
               cnn.dropout_keep_prob: 1.0
             }
-            step, summaries, loss, accuracy = sess.run(
-                [global_step, dev_summary_op, cnn.loss, cnn.accuracy],
+            #这里是fetch我们需要的值
+            #对于train.py里有的数据，直接在这里fetch，如果没有的数据，就在text_cnn.py里return一下，然后再fetch
+            step, summaries, loss, accuracy,h_drop ,scores,predict= sess.run(
+                [global_step, dev_summary_op, cnn.loss, cnn.accuracy,cnn.h_drop,cnn.scores,cnn.predictions],
                 feed_dict)
             time_str = datetime.datetime.now().isoformat()
             print("{}: step {}, loss {:g}, acc {:g}".format(time_str, step, loss, accuracy))
             if writer:
                 writer.add_summary(summaries, step)
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            #把cnn训练出来的特征保存起来
+            feature = np.asarray(h_drop)
+            feature_dir = os.path.join(out_dir, "feature")
+            try:
+                if not os.path.exists(feature_dir):
+                    os.makedirs(feature_dir)
+                np.savetxt(feature_dir + "/feature.csv",feature,delimiter=',')
+            except Exception as e:
+                print("Exception:{}".format(e))
+            print(type(feature))
+            print("The feature shape is :{}".format(feature.shape))   
+            print("The predictions are:{}".format(predict))
+            print("The scores are:{}".format(scores))
+            print("type:{}".format(type(predict)))
+     
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            #计算召回率，精确率
+            labels = []
+            for item in y_dev:
+                labels.append(item[1])
+            confusion_matrix = tf.contrib.metrics.confusion_matrix(labels=labels,predictions=predict,num_classes=None, dtype=tf.int32, name=None, weights=None)
+            confusion_matrix = sess.run(confusion_matrix)
+            print("type:{}".format(type(confusion_matrix))) 
+            print(confusion_matrix) 
+            accu = [0,0]
+            column = [0,0]
+            row = [0,0]
+            recall = 0 
+            precision = 0
+            for i in range(0,2):
+                accu[i] = confusion_matrix[i][i]
+            for i in range(0,2):
+                for j in range(0,2):
+                    column[i]+=confusion_matrix[j][i]
+            for i in range(0,2):
+                for j in range(0,2):
+                    row[i] += confusion_matrix[i][j]
+            for i in range(0,2):
+                if column[i] != 0:
+                    recall+=float(accu[i])/column[i]
+            recall = recall / 2
+            for i in range(0,2):
+                if row[i] != 0:
+                    precision += float(accu[i])/row[i]
+            precision = precision / 2
+
+            f1_score = (2 * (precision * recall)) / (precision+recall)
+            print("The recall is :{}".format(recall))
+            print("The precision is :{}".format(precision))
+            print("The f1_score is :{}".format(f1_score))
+            #将tensor变量转化为numpy
+            # dul_scores = sess.run(scores)
+            #dul-scores是一个二维矩阵，现在我们只需要第二列
+            one_scores = np.transpose(scores[:,1])
+
+            plot_roc(one_scores,labels) 
+
+ #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++           
 
         # Generate batches
         batches = data_helpers.batch_iter(

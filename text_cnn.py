@@ -55,10 +55,13 @@ class TextCNN(object):
         self.h_pool = tf.concat(pooled_outputs, 3)
         print("h_pool shape:", self.h_pool.shape)
         self.h_pool_flat = tf.reshape(self.h_pool, [-1, num_filters_total])
+        print(self.h_pool_flat)
 
         # Add dropout
         with tf.name_scope("dropout"):
             self.h_drop = tf.nn.dropout(self.h_pool_flat, self.dropout_keep_prob)
+            print(self.h_drop)
+            print(type(self.h_drop))
 
         # Final (unnomalized) scores and predictions
         with tf.name_scope("output"):

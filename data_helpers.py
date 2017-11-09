@@ -80,8 +80,11 @@ def mkdir_if_not_exist(dirpath):
 
 
 def seperate_line(line):
+    #当训练词向量就加上这几句话
     word_list = jieba.lcut(line)
     return ''.join([word + ' ' for word in word_list])
+    #训练字向量
+    #return ''.join([word + ' ' for word in line])
 
 def read_and_clean_zh_file(input_file, output_cleaned_file = None):
     lines = list(open(input_file, "r").readlines())
@@ -97,6 +100,7 @@ def clean_str(string):
     Tokenization/string cleaning for all datasets except for SST.
     Original taken from https://github.com/yoonkim/CNN_sentence/blob/master/process_data.py
     """
+    #这句话：是只保留中文汉字
     string = re.sub(r"[^\u4e00-\u9fff]", " ", string)
     #string = re.sub(r"[^A-Za-z0-9(),!?\'\`]", " ", string)
     #string = re.sub(r"\'s", " \'s", string)
